@@ -7,7 +7,7 @@ export default function Home() {
 	// values
 	const router = useRouter();
 	const qHandle = router.query.handle as string;
-	const qMd = router.query.md as string;
+	const qMd = Boolean(router.query.md as string);
 	const [handle, setHandle] = useState(qHandle);
 	const [options, setOptions] = useState({
 		notesInMarkdown: qMd ?? false,
