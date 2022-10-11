@@ -102,15 +102,20 @@ export async function exportDataOfCharacter(
 		if (!notesFolder2)
 			throw new Error("Failed to compress data (notes-markdown)");
 		notes.forEach((note, i) => {
-			let content = note.metadata?.content?.content ?? "";
+			let md = note.metadata?.content?.content ?? "";
+			if (note.metadata?.content?.title) {
+				md = `# ${note.metadata.content.title}
+
+${md}`;
+			}
 			if (note.metadata?.content?.attachments) {
 				note.metadata.content.attachments.forEach((attachment) => {
-					content += `
+					md += `
 
 ![${attachment.alt}](${attachment.address ?? attachment.content})`;
 				});
 			}
-			notesFolder2.file(`${i}.md`, content);
+			notesFolder2.file(`${i}.md`, md);
 		});
 	}
 	await zip.generateAsync({ type: "blob" }).then((blob) => {

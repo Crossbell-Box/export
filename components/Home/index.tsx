@@ -4,18 +4,19 @@ import { useCallback, useEffect, useState } from "react";
 import { exportDataOfCharacter } from "../../utils/api/export";
 
 export default function Home() {
-	// handle
+	// values
 	const router = useRouter();
 	const qHandle = router.query.handle as string;
+	const qMd = router.query.md as string;
 	const [handle, setHandle] = useState(qHandle);
+	const [options, setOptions] = useState({
+		notesInMarkdown: qMd ?? false,
+	});
+
 	useEffect(() => {
 		setHandle(qHandle);
-	}, [qHandle]);
-
-	// options
-	const [options, setOptions] = useState({
-		notesInMarkdown: false,
-	});
+		setOptions((v) => ({ ...v, notesInMarkdown: qMd ?? false }));
+	}, [qHandle, qMd]);
 
 	// export
 	const [status, setStatus] = useState<
