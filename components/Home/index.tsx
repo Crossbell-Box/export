@@ -40,7 +40,7 @@ export default function Home() {
 			setStatus("error");
 			setMessage(e.message);
 		}
-	}, [handle]);
+	}, [handle, options.notesInMarkdown]);
 
 	// input
 	const handleInputHandle = useCallback((e: any) => {
