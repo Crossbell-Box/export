@@ -115,7 +115,7 @@ ${md}`;
 				note.metadata.content.attachments.forEach((attachment) => {
 					md += `
 
-![${attachment.alt}](${attachment.address ?? attachment.content})`;
+![${attachment.alt ?? ""}](${attachment.address ?? attachment.content})`;
 				});
 			}
 			notesFolder2.file(`${note.characterId}-${note.noteId}.md`, md);
