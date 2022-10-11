@@ -94,14 +94,17 @@ export async function exportDataOfCharacter(
 	});
 	const notesFolder = zip.folder("notes");
 	if (!notesFolder) throw new Error("Failed to compress data (notes)");
-	notes.forEach((note, i) => {
-		notesFolder.file(`${i}.json`, JSON.stringify(note));
+	notes.forEach((note) => {
+		notesFolder.file(
+			`${note.characterId}-${note.noteId}.json`,
+			JSON.stringify(note)
+		);
 	});
 	if (exportNotesInMarkdown) {
 		const notesFolder2 = zip.folder("notes-markdown");
 		if (!notesFolder2)
 			throw new Error("Failed to compress data (notes-markdown)");
-		notes.forEach((note, i) => {
+		notes.forEach((note) => {
 			let md = note.metadata?.content?.content ?? "";
 			if (note.metadata?.content?.title) {
 				md = `# ${note.metadata.content.title}
@@ -115,7 +118,7 @@ ${md}`;
 ![${attachment.alt}](${attachment.address ?? attachment.content})`;
 				});
 			}
-			notesFolder2.file(`${i}.md`, md);
+			notesFolder2.file(`${note.characterId}-${note.noteId}.md`, md);
 		});
 	}
 	await zip.generateAsync({ type: "blob" }).then((blob) => {
