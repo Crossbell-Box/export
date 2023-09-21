@@ -178,12 +178,11 @@ ${md}`;
 ${yaml.stringify(frontmatter)}
 ---\n\n` + md;
 
-	// save note
+	// create note floder
 	const noteFolder = folder.folder(
 		`${note.characterId}-${note.noteId} - ${title}`
 	);
 	if (!noteFolder) throw new Error("Failed to compress data (note)");
-	noteFolder.file(`${title}.md`, md);
 
 	// save attachments
 	if (mediaLinks.length > 0) {
@@ -202,7 +201,7 @@ ${yaml.stringify(frontmatter)}
 					const data = await res.blob();
 					const fileType = data.type.split("/").pop();
 					attachmentsFolder.file(`${fileName}.${fileType}`, data);
-					md.replaceAll(
+					md = md.replaceAll(
 						`./attachments/${fileName}`,
 						`./attachments/${fileName}.${fileType}`
 					); // add file extension to links
@@ -212,6 +211,9 @@ ${yaml.stringify(frontmatter)}
 			})
 		);
 	}
+	
+	// save note
+	noteFolder.file(`${title}.md`, md);
 }
 
 function convertMediaLinks(content: string) {
